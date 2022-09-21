@@ -5,6 +5,9 @@
         OTROS REPORTES
     </label>
 </div>
+<div class="form-check">
+    <input type="hidden" value="-1" id="tipotran1" name="tipotran1">
+</div>
 
 <form id="formularioreportes">
     <div class="row">
@@ -12,9 +15,7 @@
             <div class="form-group ">
 
 
-                <div class="form-check">
-                    <input type="hidden" value="-1" id="tipotran1" name="tipotran1">
-                </div>
+
 
                 <select class="form-select" aria-label="Default select example" id="reportes">
                     <option value="0" selected>SELECCIONAR</option>
@@ -285,7 +286,7 @@
                 }
             },
             "createdRow": function (row, data, index) {
-                $('td', row).eq(5).html('<div class="btn-group"><button class="btn btn-primary modificar" data-id="' + data.idrol + '" data-toggle="tooltip" data-placement="top" title="Modificar los datos"><i class="fa fa-edit"></i> </button> <button class="btn btn-danger eliminar" data-id="' + data.idrol + '"  data-toggle="tooltip" data-placement="top" title="Eliminar Actividad"><i class="fa fa-trash"></i> </button>  </div>');
+                $('td', row).eq(5).html('<div class="btn-group"><button class="btn btn-primary modificar" data-id="' + data.idproducto + '" data-toggle="tooltip" data-placement="top" title="Detalle"><i class="fa fa-edit"></i> </button></div>');
                 if (data.cantidad == 0) {
                     $('td', row).eq(4).html("AGOTADO");
                 }
@@ -355,8 +356,8 @@
                 ocultar();
                 $('#formulariorepprod').show();
                 $('#reportes').show();
-
-                //$('#prodmasvendido').dataTable().fnDraw('page');
+                $('#tablaprodmasvendido').dataTable().fnDraw('page');
+                console.log("se refresco la tabla");
             } else {
                 if ($(this).val() == "2") {
 
@@ -366,6 +367,8 @@
                     ocultar();
                     $('#formulariorepprod').show();
                     $('#reportes').show();
+                    $('#tablaprodmasvendido').dataTable().fnDraw('page');
+                    console.log("se refresco la tabla");
 
                 } else {
                     if ($(this).val() == "3") {
@@ -376,6 +379,8 @@
                         ocultar();
                         $('#formulariorepprod').show();
                         $('#reportes').show();
+                        $('#tablaprodmasvendido').dataTable().fnDraw('page');
+                        console.log("se refresco la tabla");
 
                     } else {
                         if ($(this).val() == "4") {
@@ -395,6 +400,8 @@
                                 ocultar();
                                 $('#formulariorepclien').show();
                                 $('#reportes').show();
+                                $('#tablaclientesfrecuentes').dataTable().fnDraw('page');
+
 
                             }
                         }
@@ -411,7 +418,7 @@
             $('#formulario').hide();
             $('#formulariorepprod').hide();
             $('#formulariorepclien').hide();
-            //$('#tablaclientesfrecuentes').hide();
+
 
         }
 
