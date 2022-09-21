@@ -1,0 +1,419 @@
+<div class="form-check">
+    <input class="form-check-input" type="checkbox" value="" id="otroreport" checked>
+    <label class="form-check-label" for="otroreport">
+
+        OTROS REPORTES
+    </label>
+</div>
+
+<form id="formularioreportes">
+    <div class="row">
+        <div class="col-md-2 ">
+            <div class="form-group ">
+
+
+                <div class="form-check">
+                    <input type="hidden" value="-1" id="tipotran1" name="tipotran1">
+                </div>
+
+                <select class="form-select" aria-label="Default select example" id="reportes">
+                    <option value="0" selected>SELECCIONAR</option>
+                    <option value="1">PRODUCTOS MAS VENDIDOS</option>
+                    <option value="2">PRODUCTOS MENOS VENDIDOS</option>
+                    <option value="3">PRODUCTOS ESCASOS</option>
+                    <option value="4">SERVICIOS MAS REALIZADOS</option>
+                    <option value="5">CLIENTES FRECUENTES</option>
+                    <option value="6">MEJORES VENDEDORES</option>
+                    <option value="7">PROVEEDOR MAS FRECUENTE</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+</form>
+
+<form id="formulario">
+    <div class="row">
+        <div class="col-md-2">
+            <div class="form-group">
+                <label class="control-label">
+                    Tipo de Reporte
+                </label>
+            </div>
+            <div class="form-group">
+                <select class="form-select" aria-label="Default select example" id="tipotran">
+                    <option value="1" selected>Ventas</option>
+                    <option value="0">Compras</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="form-group">
+                <label class="control-label">
+                    Tiempo de Reporte
+                </label>
+            </div>
+            <div class="form-group">
+                <select class="form-select" aria-label="Default select example" id="tiempo">
+                    <option value="0" selected>Diario</option>
+                    <option value="1">Semana</option>
+                    <option value="2">Mes</option>
+                    <option value="3">Año</option>
+                    <option value="4">Otro</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="col-md-2 fechas">
+            <div class="form-group">
+                <label class="control-label">
+                    Fecha Inicio
+                </label>
+                <input aria-describedby="addon-right addon-left" type="date" placeholder="Fecha Inicio "
+                       name="fechainicio" id="fechainicio" class="form-control">  <!---->
+
+            </div>
+        </div>
+        <div class="col-md-2 fechas">
+            <div class="form-group">
+                <label class="control-label">
+                    Fecha Fin
+                </label>
+                <input aria-describedby="addon-right addon-left" type="date" placeholder="Fecha Fin " name="fechafin"
+                       id="fechafin" class="form-control">  <!---->
+
+            </div>
+
+        </div>
+    </div>
+
+    <table id="tabla" class="table table-bordered table-hover dataTable dtr-inline" role="grid"
+           aria-describedby="example2_info">
+        <thead>
+        <tr>
+            <th>Id Transaccion</th>
+            <th>Fecha</th>
+            <th>Total</th>
+            <th>Tipo Tran.</th>
+            <th>Usuario</th>
+            <th id="namecolum">Cliente</th>
+            <th>Id Proveedor</th>
+            <th>Id Sucursal</th>
+            <th>DETALLLE</th>
+        </tr>
+        </thead>
+    </table>
+</form>
+
+<form id="formulariorepprod">
+    <table id="tablaprodmasvendido" class="table table-bordered table-hover dataTable dtr-inline" role="grid"
+           aria-describedby="example2_info">
+        <thead>
+        <tr>
+            <th>VENTAS</th>
+            <th>MARCA</th>
+            <th>PRODUCTO</th>
+            <th>CODIGO</th>
+            <th>SALDO</th>
+
+
+        </tr>
+        </thead>
+    </table>
+</form>
+
+<form id="formulariorepclien">
+    <table id="tablaclientesfrecuentes" class="table table-bordered table-hover dataTable dtr-inline" role="grid"
+           aria-describedby="example2_info">
+        <thead>
+        <tr>
+            <th>ID CLIENTE</th>
+            <th>CLIENTE</th>
+            <th>COMPRAS</th>
+            <th>CODIGO</th>
+
+        </tr>
+        </thead>
+    </table>
+</form>
+
+
+<script>
+    //evento que se ejecuta cuandodo se cargo todo el docuemtno
+    $(document).ready(function () {
+        ocultar();
+        $('#formulario').show();
+
+
+
+        var now = new Date();
+        var day = ("0" + now.getDate()).slice(-2);
+        var month = ("0" + (now.getMonth() + 1)).slice(-2);
+        var today = now.getFullYear() + "-" + (month) + "-" + (day);
+        $("#fechafin").val(today);
+        $("#fechainicio").val(today);
+
+        $('#tipotran').change(function () {
+            if ($(this).val() == "1") {
+                $("#namecolum").text("Cliente");
+            } else {
+                $("#namecolum").text("Proveedor");
+            }
+            console.log($(this).val());
+            $('#tabla').dataTable().fnDraw('page');
+        });
+        $('#tiempo').change(function () {
+            console.log($(this).val());
+            if ($(this).val() == "0") {
+                $("#fechafin").val(today);
+                $("#fechainicio").val(today);
+            } else {
+
+                if ($(this).val() == "1") {
+                    var today1 = now.getFullYear() + "-" + (month) + "-" + (day);
+                    $("#fechafin").val(today1);
+                    var today1 = now.getFullYear() + "-" + (month) + "-" + (day - 7);
+                    $("#fechainicio").val(today1);
+
+                } else {
+                    if ($(this).val() == "2") {
+
+                        var today2 = now.getFullYear() + "-" + (month) + "-" + (day);
+                        $("#fechafin").val(today2);
+
+                        var today2 = now.getFullYear() + "-" + (month) + "-01";
+
+                        $("#fechainicio").val(today2);
+
+                    } else {
+                        if ($(this).val() == "3") {
+                            var today3 = now.getFullYear() + "-" + (month) + "-" + (day);
+                            $("#fechafin").val(today3);
+                            var today3 = (now.getFullYear()) + "-01-01";
+                            $("#fechainicio").val(today3);
+                        }
+                        if ($(this).val() == "4") {
+                            $(".fechas").show();
+                        } else {
+                            $(".fechas").hide();
+
+                        }
+                    }
+
+
+                }
+
+
+            }
+
+
+            $('#tabla').dataTable().fnDraw('page');
+        });
+        $("#fechainicio").change(function () {
+            $('#tabla').dataTable().fnDraw('page');
+        });
+        $("#fechafin").change(function () {
+            $('#tabla').dataTable().fnDraw('page');
+        });
+        $('#tabla').DataTable({//declaracion de la tabla para datatables
+            language: {
+                url: 'https://cdn.datatables.net/plug-ins/1.12.1/i18n/es-ES.json'
+            }, "processing": true,
+            "serverSide": true,
+            "lengthChange": true,
+            "columns": [ // NOTE: you need to specify names of fields as ids for the columns
+                {"data": "idtransaccion"},
+                {"data": "fecha"},
+                {"data": "total"},
+                {"data": "tipotransaccion"},
+                {"data": "vende"},
+                {"data": "clien"},
+                {"data": "prove"},
+                {"data": "nombresu"},
+                {"data": "nombresu"}
+
+            ],
+            "ajax": {
+                "url": "/detalle/List",
+                "type": "POST",
+                "contentType": "application/json; charset=utf-8",
+                "data": function (d) {
+
+                    d.tipotran = $('#tipotran').val();
+                    d.tiempo = $('#tiempo').val();
+                    d.fechainicio = $("#fechainicio").val();
+                    d.fechafin = $("#fechafin").val();
+
+                    return JSON.stringify(d); // NOTE: you also need to stringify POST payload
+                }
+            },
+            "createdRow": function (row, data, index) {
+                $('td', row).eq(8).html('<div class="btn-group"><button class="btn btn-primary modificar" data-id="' + data.idrol + '" data-toggle="tooltip" data-placement="top" title="Modificar los datos"><i class="fa fa-edit"></i> </button> <button class="btn btn-danger eliminar" data-id="' + data.idrol + '"  data-toggle="tooltip" data-placement="top" title="Eliminar Actividad"><i class="fa fa-trash"></i> </button>  </div>');
+            },
+
+            "drawCallback": function (settings) {
+
+            }
+        });
+
+        $('#tablaprodmasvendido').DataTable({//declaracion de la tabla para datatables
+            language: {
+                url: 'https://cdn.datatables.net/plug-ins/1.12.1/i18n/es-ES.json'
+            },
+            "order": [0, 'desc'],
+            "processing": true,
+            "serverSide": true,
+            "lengthChange": true,
+            "columns": [ // NOTE: you need to specify names of fields as ids for the columns
+                {"data": "cantidadvendida"},
+                {"data": "marca"},
+                {"data": "nombre"},
+                {"data": "codigo"},
+                {"data": "cantidad"},
+                {"data": "cantidad"}
+            ],
+            "ajax": {
+
+                "url": "/detalle/List",
+                "type": "POST",
+                "contentType": "application/json; charset=utf-8",
+                "data": function (d) {
+                    console.log($('#reportes').val() + "este valor de la lista de rep " + $('#tipotran1').val() + "vakir de ka trabsaccuib");
+                    d.tipotran = $('#tipotran1').val();
+                    //d.tiporeporte = $('#reportes').val();
+                    return JSON.stringify(d); // NOTE: you also need to stringify POST payload
+                }
+            },
+            "createdRow": function (row, data, index) {
+                $('td', row).eq(5).html('<div class="btn-group"><button class="btn btn-primary modificar" data-id="' + data.idrol + '" data-toggle="tooltip" data-placement="top" title="Modificar los datos"><i class="fa fa-edit"></i> </button> <button class="btn btn-danger eliminar" data-id="' + data.idrol + '"  data-toggle="tooltip" data-placement="top" title="Eliminar Actividad"><i class="fa fa-trash"></i> </button>  </div>');
+                if (data.cantidad == 0) {
+                    $('td', row).eq(4).html("AGOTADO");
+                }
+
+            },
+
+            "drawCallback": function (settings) {
+
+            }
+        });
+
+        $('#tablaclientesfrecuentes').DataTable({//declaracion de la tabla para datatables
+            language: {
+                url: 'https://cdn.datatables.net/plug-ins/1.12.1/i18n/es-ES.json'
+            },
+            "processing": true,
+            "serverSide": true,
+            "lengthChange": true,
+            "columns": [ // NOTE: you need to specify names of fields as ids for the columns
+                {"data": "idcliente"},
+                {"data": "nombres"},
+                {"data": "compras"},
+                {"data": "compras"},
+            ],
+            "ajax": {
+
+                "url": "/detalle/listasimple",
+                "type": "POST",
+                "contentType": "application/json; charset=utf-8",
+                "data": function (d) {
+                    return JSON.stringify(d); // NOTE: you also need to stringify POST payload
+                }
+            },
+            "createdRow": function (row, data, index) {
+                $('td', row).eq(3).html('<div class="btn-group"><button class="btn btn-primary modificar" data-id="' + data.idrol + '" data-toggle="tooltip" data-placement="top" title="Modificar los datos"><i class="fa fa-edit"></i> </button> <button class="btn btn-danger eliminar" data-id="' + data.idrol + '"  data-toggle="tooltip" data-placement="top" title="Eliminar Actividad"><i class="fa fa-trash"></i> </button>  </div>');
+
+
+            },
+
+            "drawCallback": function (settings) {
+
+            }
+        });
+
+
+        //FUNCION PARA MOSTRAR OTROS REPORTES
+        $('#otroreport').click(function () {
+            if ($('#otroreport').is(':checked')) {
+                ocultar();
+                $('#formulario').show();
+                $('#tabla').show();
+
+            } else {
+                ocultar();
+                $('#reportes').show();
+
+            }
+        });
+
+        $('#reportes').change(function () {
+
+            console.log($(this).val() + "valor de la seleccion");
+            if ($(this).val() == "1") {
+
+                $('#tipotran1').val("-1");
+                console.log("entro en val  " + $('#tipotran1').val());
+                ocultar();
+                $('#formulariorepprod').show();
+                $('#reportes').show();
+
+                //$('#prodmasvendido').dataTable().fnDraw('page');
+            } else {
+                if ($(this).val() == "2") {
+
+                    $('#tipotran1').val("-2");
+                    console.log("entro en val " + $('#tipotran1').val());
+
+                    ocultar();
+                    $('#formulariorepprod').show();
+                    $('#reportes').show();
+
+                } else {
+                    if ($(this).val() == "3") {
+
+                        $('#tipotran1').val("-3");
+                        console.log("entro en val " + $('#tipotran1').val());
+
+                        ocultar();
+                        $('#formulariorepprod').show();
+                        $('#reportes').show();
+
+                    } else {
+                        if ($(this).val() == "4") {
+
+                            $('#tipotran1').val("-3");
+                            console.log("entro en val " + $('#tipotran1').val());
+
+                            ocultar();
+                            $('#formulariorepprod').show();
+                            $('#reportes').show();
+
+                        } else {
+                            if ($(this).val() == "5") {
+
+                                console.log("entro en val " + $('#tipotran1').val());
+
+                                ocultar();
+                                $('#formulariorepclien').show();
+                                $('#reportes').show();
+
+                            }
+                        }
+                    }
+                }
+
+            }
+
+
+        });
+
+        function ocultar() {
+            $('#reportes').hide();
+            $('#formulario').hide();
+            $('#formulariorepprod').hide();
+            $('#formulariorepclien').hide();
+            //$('#tablaclientesfrecuentes').hide();
+
+        }
+
+    });
+</script>
